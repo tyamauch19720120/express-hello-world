@@ -1,6 +1,21 @@
 const express = require("express");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+
 const app = express();
 const port = process.env.PORT || 3001;
+
+// アップロード受け付けAPI
+app.post("/upload", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "ファイルがありません" });
+  }
+  res.json({
+    message: "アップロード成功",
+    originalname: req.file.originalname,
+    size: req.file.size
+  });
+});
 
 app.get("/", (req, res) => res.type('html').send(html));
 
